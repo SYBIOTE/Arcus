@@ -158,7 +158,7 @@ class Game :
                 self.last_arrow = self.new_arrow
                 # last_arrow_time=now
 
-            if now - self.last_baloon_time > 20000:
+            if now - self.last_baloon_time > 2000:
                 self.new_baloon = Baloon(self)
                 self.all_sprites.add(self.new_baloon)
                 self.baloons.add(self.new_baloon)
