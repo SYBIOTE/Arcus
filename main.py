@@ -12,16 +12,18 @@ def main() :
     game.loadMusic()
     game.readHighScore()
     while intro:
-        pygame.mixer.music.play(loops=-1)
+        #pygame.mixer.music.play(loops=-1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 intro = False
         game.screen.fill(SKY_BLUE)
         game.screen.blit(game.background, game.background_rect)
-        game.draw.Button(200, 2*HEIGHT/3, "PLAY", BRIGHT_GREEN, GREEN, game.gameloop, 150, 100)
-        game.draw.Button(WIDTH-450, 2*HEIGHT/3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
-        game.draw.draw_text("__ArcuS__", WIDTH/2, HEIGHT/3, 200, BLUE)
-        game.draw.draw_text("HIGH SCORE:%d" % (game.highscore), WIDTH-400, 50, 30, BLACK)
+        game.draw.Button(4*WIDTH/5-75, 2*HEIGHT/3, "PLAY", BRIGHT_GREEN, GREEN, game.gameloop, WIDTH/8, HEIGHT/9)
+        game.draw.Button(WIDTH/5-75, 2*HEIGHT/3, "QUIT", BRIGHT_RED, RED, quit, WIDTH/8, HEIGHT/9)
+        game.draw.drawimage(WIDTH/2-WIDTH/4,HEIGHT/5,WIDTH/2,HEIGHT/4,TITLE_SCREEN)
+        game.draw.drawimage(4*WIDTH/5 - WIDTH/10 , 2*HEIGHT / 3-WIDTH/20, WIDTH/5, WIDTH/5,"assets/playbutton.png")
+        game.draw.drawimage(WIDTH / 5 -WIDTH/10, 2*HEIGHT / 3-WIDTH/20, WIDTH/5, WIDTH/5,"assets/quitbutton.png")
+        game.draw.draw_text("HIGH SCORE:%d" % (game.highscore), WIDTH-WIDTH/5, 50, 30, BLACK)
         pygame.display.flip()
         game.clock.tick(FPS)
 

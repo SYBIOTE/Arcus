@@ -1,8 +1,9 @@
 # constants
-WIDTH = 1700
-HEIGHT = 1000
+
+WIDTH = 1280
+HEIGHT = 760
 FPS = 60
-GRAVITY = 0.15
+GRAVITY = 0.01
 PI = 3.142
 
 WHITE = (255, 255, 255)
@@ -15,9 +16,9 @@ SKY_BLUE = (0, 255, 255)
 BLUE = (0, 0, 255)
 
 HIGHSCORE_FILE="highscore.txt"
-ARROW_IMAGE = "assets/arrow_1.png"
-BACKGROUND_IMAGE = "assets/background.png"
-
+ARROW_IMAGE = "assets/laser.png"
+BACKGROUND_IMAGE = "assets/back.png"
+TITLE_SCREEN="assets/arcus.png"
 EXPLOSION_SOUND = "assets/boom.wav"
 CLICK_SOUND = "assets/select.wav"
 MUSIC_FILE = "assets/tgfcoder-FrozenJam-SeamlessLoop.ogg"

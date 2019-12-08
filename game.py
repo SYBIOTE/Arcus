@@ -10,7 +10,7 @@ from animation import *
 class Game :
     def __init__(self) :
         pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
+        self.screen = pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
         pygame.display.set_caption("Arcus")
         self.clock = pygame.time.Clock()
         self.last_arrow_time = pygame.time.get_ticks()
@@ -28,7 +28,7 @@ class Game :
                 path.join(path.dirname(__file__), BACKGROUND_IMAGE)).convert()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
         self.background_rect = self.background.get_rect()
-        self.baloon_color = ["black", "blue", "red", "green"]
+        self.baloon_color = ["fire","meteor"]
 
         self.all_sprites = None
         self.baloons = None
@@ -158,7 +158,7 @@ class Game :
                 self.last_arrow = self.new_arrow
                 # last_arrow_time=now
 
-            if now - self.last_baloon_time > 2000:
+            if now - self.last_baloon_time > 20000:
                 self.new_baloon = Baloon(self)
                 self.all_sprites.add(self.new_baloon)
                 self.baloons.add(self.new_baloon)
@@ -167,10 +167,13 @@ class Game :
             for baloon in self.baloons:
                 hits = pygame.sprite.spritecollide(
                     baloon, self.arrows, False, pygame.sprite.collide_circle)
-                if hits:
+                threshold = self.new_baloon.rect.top
+                ##print(threshold)
+                # adding treshold makes ballons or meteors explode at impact
+                if hits or threshold<2:
                     baloon.kill()
-                    explo = Explosion(baloon.rect.center, 100,self)
-                    self.all_sprites.add(explo)
+                    explode = Explosion(baloon.rect.center, 100,self)
+                    self.all_sprites.add(explode)
                     self.score += 1
 
                 if (self.score > self.highscore):
@@ -180,10 +183,10 @@ class Game :
 
             if self.misses > MISSES:
                 self.replay()
-            self.game_screen()
+            self.end_screen()
             pygame.display.flip()
 
-    def game_screen(self) :
+    def end_screen(self) :
         self.screen.fill(SKY_BLUE)
         self.screen.blit(self.background, self.background_rect)
         self.all_sprites.draw(self.screen)
@@ -202,6 +205,12 @@ class Game :
 class Draw() :
     def __init__(self,game) :
         self.game = game
+
+    def drawimage(self,x,y,w,h,address):
+        image = self.insertimage = pygame.image.load(
+                path.join(path.dirname(__file__),address)).convert_alpha()
+        image=pygame.transform.scale(image,(int(w),int(h)))
+        self.game.screen.blit(image, (x, y))
 
     def DrawRect(self,x, y, w, h, c):
         pygame.draw.rect(self.game.screen, c, [x, y, w, h])

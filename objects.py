@@ -3,6 +3,7 @@
 import pygame
 import math
 import random
+from game import *
 from os import path
 from constants import *
 
@@ -41,6 +42,11 @@ class Arrow(pygame.sprite.Sprite):
             self.image = new_image
             self.rect = self.image.get_rect()
             self.rect.center = old_center
+            ##print(self.rect.center)
+            ##code to kill arrow
+            if(self.rect.left>WIDTH or self.rect.right<0 or self.rect.bottom<0):
+               self.kill()
+               ##print("arrow destroyed")
             # print "moving"
 
         else:
@@ -131,5 +137,6 @@ class Baloon(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speedy
         if self.rect.top < -20 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
+
             self.kill()
             self.game.misses += 1
