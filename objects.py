@@ -6,6 +6,7 @@ import random
 from os import path
 from constants import *
 
+
 #Classes for in-game sprites
 class Arrow(pygame.sprite.Sprite):
     def __init__(self,game):
@@ -136,6 +137,5 @@ class Baloon(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += self.speedy
         if self.rect.top < -20 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
-
             self.kill()
             self.game.misses += 1

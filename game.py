@@ -10,7 +10,7 @@ from animation import *
 class Game :
     def __init__(self) :
         pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH,HEIGHT),pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
         pygame.display.set_caption("Arcus")
         self.clock = pygame.time.Clock()
         self.last_arrow_time = pygame.time.get_ticks()
@@ -168,10 +168,8 @@ class Game :
             for baloon in self.baloons:
                 hits = pygame.sprite.spritecollide(
                     baloon, self.arrows, False, pygame.sprite.collide_circle)
-                threshold = self.new_baloon.rect.top
-                ##print(threshold)
-                # adding treshold makes ballons or meteors explode at impact
-                if hits or threshold<15:
+
+                if hits:
                     baloon.kill()
                     explode = Explosion(baloon.rect.center, 100,self)
                     self.all_sprites.add(explode)
