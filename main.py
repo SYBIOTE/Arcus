@@ -11,8 +11,9 @@ def main() :
     game = Game()
     game.loadMusic()
     game.readHighScore()
+    pygame.mixer.music.play(loops=-1)
     while intro:
-        #pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.play(loops=-1)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 intro = False
