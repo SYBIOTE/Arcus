@@ -3,7 +3,6 @@
 import pygame
 import math
 import random
-from game import *
 from os import path
 from constants import *
 
