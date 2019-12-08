@@ -171,7 +171,7 @@ class Game :
                 threshold = self.new_baloon.rect.top
                 ##print(threshold)
                 # adding treshold makes ballons or meteors explode at impact
-                if hits or threshold<2:
+                if hits or threshold<15:
                     baloon.kill()
                     explode = Explosion(baloon.rect.center, 100,self)
                     self.all_sprites.add(explode)
