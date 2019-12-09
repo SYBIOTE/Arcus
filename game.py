@@ -6,11 +6,12 @@ from os import path
 from objects import *
 from animation import *
 
+
 # Game Class has in game functions
-class Game :
-    def __init__(self) :
-        pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
+class Game:
+    def __init__(self):
+
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Arcus")
         self.clock = pygame.time.Clock()
         self.last_arrow_time = pygame.time.get_ticks()
@@ -23,12 +24,12 @@ class Game :
         self.PAUSE = False
         self.highscore = 0
         self.arrow_img = pygame.image.load(
-                path.join(path.dirname(__file__), ARROW_IMAGE)).convert()
+            path.join(path.dirname(__file__), ARROW_IMAGE)).convert()
         self.background = pygame.image.load(
-                path.join(path.dirname(__file__), BACKGROUND_IMAGE)).convert()
+            path.join(path.dirname(__file__), BACKGROUND_IMAGE)).convert()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
         self.background_rect = self.background.get_rect()
-        self.baloon_color = ["fire","meteor"]
+        self.baloon_color = ["fire", "meteor"]
 
         self.all_sprites = None
         self.baloons = None
@@ -51,16 +52,16 @@ class Game :
         self.select_sound = pygame.mixer.Sound(
             path.join(path.dirname(__file__), CLICK_SOUND))
 
-    def readHighScore(self) :
-        try :
+    def readHighScore(self):
+        try:
             with open(HIGHSCORE_FILE, "r") as file:
                 self.highscore = int(file.readline())
-        except :
+        except:
             self.highscore = 0
-    
-    def writeHighScore(self) :
+
+    def writeHighScore(self):
         with open(HIGHSCORE_FILE, "w") as file:
-                file.write("%d" % (self.score))
+            file.write("%d" % (self.score))
 
     def loadMusic(self):
         pygame.mixer.music.load(
@@ -70,7 +71,6 @@ class Game :
     def unpause_function(self):
         self.PAUSE = False
 
-
     def pause_function(self):
         self.PAUSE = True
         while self.PAUSE:
@@ -78,13 +78,12 @@ class Game :
                 if event.type == pygame.QUIT:
                     quit()
 
-            self.draw.Button(200, 2*HEIGHT/3, "CONTINUE", BRIGHT_GREEN,
-               GREEN, self.unpause_function, 150, 100)
-            self.draw.Button(WIDTH-450, 2*HEIGHT/3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
-            self.draw.draw_text("PAUSE", WIDTH/2, HEIGHT/3, 200, BLUE)
+            self.draw.Button(200, 2 * HEIGHT / 3, "CONTINUE", BRIGHT_GREEN,
+                             GREEN, self.unpause_function, 150, 100)
+            self.draw.Button(WIDTH - 450, 2 * HEIGHT / 3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
+            self.draw.draw_text("PAUSE", WIDTH / 2, HEIGHT / 3, 200, BLUE)
             pygame.display.flip()
             self.clock.tick(FPS)
-
 
     def replay(self):
         if self.score == self.highscore:
@@ -97,18 +96,18 @@ class Game :
 
                 self.screen.fill(SKY_BLUE)
                 self.screen.blit(self.background, self.background_rect)
-                self.draw.Button(200, 2*HEIGHT/3, "PLAY AGAIN",
-                    BRIGHT_GREEN, GREEN, self.gameloop, 150, 100)
-                self.draw.Button(WIDTH-450, 2*HEIGHT/3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
-                self.draw.draw_text("Your Score : %d" % (self.score), WIDTH/2, HEIGHT/3, 100, BLUE)
-                self.draw.draw_text("HIGH SCORE:%d" % (self.highscore), WIDTH-400, 50, 30, BLACK)
+                self.draw.Button(200, 2 * HEIGHT / 3, "PLAY AGAIN",
+                                 BRIGHT_GREEN, GREEN, self.gameloop, 150, 100)
+                self.draw.Button(WIDTH - 450, 2 * HEIGHT / 3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
+                self.draw.draw_text("Your Score : %d" % (self.score), WIDTH / 2, HEIGHT / 3, 100, BLUE)
+                self.draw.draw_text("HIGH SCORE:%d" % (self.highscore), WIDTH - 400, 50, 30, BLACK)
                 if self.score == self.highscore:
                     self.draw.draw_text("Congratulations you have a new high score",
-                        WIDTH/2, HEIGHT-200, 60, BRIGHT_GREEN)
+                                        WIDTH / 2, HEIGHT - 200, 60, BRIGHT_GREEN)
                 pygame.display.flip()
                 self.clock.tick(FPS)
 
-    def reload(self) :
+    def reload(self):
         self.misses = 0
         self.highscore = 0
         self.score = 0
@@ -125,7 +124,7 @@ class Game :
 
     def gameloop(self):
         self.reload()
-        self.readHighScore()        
+        self.readHighScore()
 
         self.all_sprites = pygame.sprite.Group()
         self.arrows = pygame.sprite.Group()
@@ -143,7 +142,7 @@ class Game :
         # last_arrow_time = pygame.time.get_ticks()
         self.last_baloon_time = pygame.time.get_ticks()
         running = True
-#         self.instruction_screen()
+        #         self.instruction_screen()
         while running:
 
             self.clock.tick(FPS)
@@ -152,7 +151,7 @@ class Game :
                     running = False
 
             now = pygame.time.get_ticks()
-            if self.last_arrow.Released and now-self.last_arrow_time > 1000:
+            if self.last_arrow.Released and now - self.last_arrow_time > 1000:
                 self.new_arrow = Arrow(self)
                 self.all_sprites.add(self.new_arrow)
                 self.arrows.add(self.new_arrow)
@@ -171,11 +170,11 @@ class Game :
 
                 if hits:
                     baloon.kill()
-                    explode = Explosion(baloon.rect.center, 100,self)
+                    explode = Explosion(baloon.rect.center, 100, self)
                     self.all_sprites.add(explode)
                     self.score += 1
 
-                if (self.score > self.highscore):
+                if self.score > self.highscore:
                     self.highscore = self.score
 
             self.all_sprites.update()
@@ -185,65 +184,65 @@ class Game :
             self.end_screen()
             pygame.display.flip()
 
-    def end_screen(self) :
+    def end_screen(self):
         self.screen.fill(SKY_BLUE)
         self.screen.blit(self.background, self.background_rect)
         self.all_sprites.draw(self.screen)
-        self.draw.Button(WIDTH-120, 20, "PAUSE", BRIGHT_GREEN,
-                GREEN, self.pause_function, 100, 100)
-        self.draw.Button(WIDTH-120, 140, "Instructions", BRIGHT_GREEN,
-                GREEN, self.instruction_screen, 100, 100)
-        self.draw.Button(WIDTH-120, 260, "QUIT", BRIGHT_RED, RED, quit, 100, 100)
-        self.draw.Button(WIDTH-120, 380, "RESTART", BLUE, SKY_BLUE, self.gameloop, 100, 100)
+        self.draw.Button(WIDTH - 170, 20, "PAUSE", BRIGHT_GREEN,
+                         GREEN, self.pause_function, 150, 100)
+        self.draw.Button(WIDTH - 170, 140, "Instructions", BRIGHT_GREEN,
+                         YELLOW, self.instruction_screen, 150, 100)
+        self.draw.Button(WIDTH - 170, 260, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
+        self.draw.Button(WIDTH - 170, 380, "RESTART", BLUE, SKY_BLUE, self.gameloop, 150, 100)
         self.draw.draw_text("MISSES : %d" % (self.misses), WIDTH -
-                200, HEIGHT-150, 50, BRIGHT_RED)
-        self.draw.draw_text("SCORE : %d" % (self.score), WIDTH-200, HEIGHT-100, 40, BLUE)
+                            200, HEIGHT - 150, 50, BRIGHT_RED)
+        self.draw.draw_text("SCORE : %d" % (self.score), WIDTH - 200, HEIGHT - 100, 40, BLUE)
         self.draw.draw_text("HIGH SCORE : %d" % (self.highscore),
-                WIDTH-200, HEIGHT-50, 40, BLUE)
-   
-   #screen when instruction button is clicked
+                            WIDTH - 200, HEIGHT - 50, 40, BLUE)
+
+    # screen when instruction button is clicked
     def instruction_screen(self):
         self.instruction = True
         while self.instruction:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
-                self.draw.DrawRect(150,150,WIDTH-300,HEIGHT-300,GREEN_YELLOW) 
-                x=600
-                y=300
-                self.draw.draw_text("Instructions",WIDTH/2,y-100,80,BLACK)
-                self.draw.draw_text("1. Use mouse to direct the arrow.",x,y,60,BLACK)
-                self.draw.draw_text("2. Click on the arrow to shoot.",x-27,y+80,60,BLACK)
-                self.draw.draw_text("3. Drag the arrow to increase velocity",x+50,y+160,60,BLACK)
-                self.draw.draw_text(" and then release to shoot.",x-20,y+220,60,BLACK)
-                self.draw.Button(WIDTH-930, 2*HEIGHT/3, "RESUME",DARK_BROWN,BROWN,self.resume, 150, 100)
+                self.draw.DrawRect(150, 150, WIDTH - 300, HEIGHT - 300, GREEN_YELLOW)
+                x = 600
+                y = 300
+                self.draw.draw_text("Instructions", WIDTH / 2, y - 100, 80, BLACK)
+                self.draw.draw_text("1. Use mouse to direct the arrow.", x, y, 60, BLACK)
+                self.draw.draw_text("2. Click on the arrow to shoot.", x - 27, y + 80, 60, BLACK)
+                self.draw.draw_text("3. Drag the arrow to increase velocity", x + 50, y + 160, 60, BLACK)
+                self.draw.draw_text(" and then release to shoot.", x - 20, y + 220, 60, BLACK)
+                self.draw.Button(WIDTH - 930, 2 * HEIGHT / 3, "RESUME", DARK_BROWN, BROWN, self.resume, 170, 100)
                 pygame.display.flip()
                 self.clock.tick(FPS)
-                
-   #function to resume the game             
-    def resume(self):
-        self.instruction=False
 
-#Class to draw text and surfaces on screen
-class Draw() :
-    def __init__(self,game) :
+    # function to resume the game
+    def resume(self):
+        self.instruction = False
+
+
+# Class to draw text and surfaces on screen
+class Draw():
+    def __init__(self, game):
         self.game = game
 
-    def drawimage(self,x,y,w,h,address):
+    def drawimage(self, x, y, w, h, address):
         image = self.insertimage = pygame.image.load(
-                path.join(path.dirname(__file__),address)).convert_alpha()
-        image=pygame.transform.scale(image,(int(w),int(h)))
+            path.join(path.dirname(__file__), address)).convert_alpha()
+        image = pygame.transform.scale(image, (int(w), int(h)))
         self.game.screen.blit(image, (x, y))
 
-    def DrawRect(self,x, y, w, h, c):
+    def DrawRect(self, x, y, w, h, c):
         pygame.draw.rect(self.game.screen, c, [x, y, w, h])
 
-    def text_objects(self,text, font, color):
+    def text_objects(self, text, font, color):
         textSurface = font.render(text, True, color)
         return textSurface, textSurface.get_rect()
 
-
-    def draw_text(self,text, x, y, s, color):
+    def draw_text(self, text, x, y, s, color):
         font_name = pygame.font.match_font('comicsansms.ttf')
         s = int(s)
         largeText = pygame.font.Font(font_name, s)
@@ -251,17 +250,14 @@ class Draw() :
         TextRect.center = ((x, y))
         self.game.screen.blit(TextSurf, TextRect)
 
-
-    def Button(self,x,y , string, color2, color1, function, w, h):
-        y = int(y) 
+    def Button(self, x, y, string, color2, color1, function, w, h):
+        y = int(y)
         self.game.mouse = pygame.mouse.get_pos()
         self.game.click = pygame.mouse.get_pressed()
         self.DrawRect(x, y, w, h, color1)
-        if x <= self.game.mouse[0] <= x+w and y <= self.game.mouse[1] <= y+h:
+        if x <= self.game.mouse[0] <= x + w and y <= self.game.mouse[1] <= y + h:
             self.DrawRect(x, y, w, int(h), color2)
-            if (self.game.click[0] == 1):
+            if self.game.click[0] == 1:
                 self.game.select_sound.play()
                 function()
-        self.draw_text(string, x+w/2, y+h/2, (w+h)/8, BLACK)
-        
-    
+        self.draw_text(string, x + w / 2, y + h / 2, (w + h) / 8, BLACK)
