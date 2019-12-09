@@ -1,9 +1,11 @@
 # constants
+
 import pygame
 pygame.init()
 dimensions = pygame.display.Info()
 WIDTH = dimensions.current_w
 HEIGHT = dimensions.current_h-20
+
 FPS = 60
 GRAVITY = 0.01
 PI = 3.142

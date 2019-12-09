@@ -8,10 +8,20 @@ from animation import *
 
 
 # Game Class has in game functions
-class Game:
-    def __init__(self):
 
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+
+class Game :
+    def __init__(self) :
+        pygame.init()
+
+        #detecting screen size and storing
+        displayInfoObject = pygame.display.Info()
+        self.WIDTH = displayInfoObject.current_w - 20
+        self.HEIGHT = displayInfoObject.current_h - 20
+
+        self.screen = pygame.display.set_mode((self.WIDTH,self.HEIGHT))
+
         pygame.display.set_caption("Arcus")
         self.clock = pygame.time.Clock()
         self.last_arrow_time = pygame.time.get_ticks()
@@ -26,8 +36,10 @@ class Game:
         self.arrow_img = pygame.image.load(
             path.join(path.dirname(__file__), ARROW_IMAGE)).convert()
         self.background = pygame.image.load(
+
             path.join(path.dirname(__file__), BACKGROUND_IMAGE)).convert()
         self.background = pygame.transform.scale(self.background, (WIDTH, HEIGHT))
+
         self.background_rect = self.background.get_rect()
         self.baloon_color = ["fire", "meteor"]
 
@@ -78,10 +90,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     quit()
 
+
             self.draw.Button(200, 2 * HEIGHT / 3, "CONTINUE", BRIGHT_GREEN,
                              GREEN, self.unpause_function, 150, 100)
             self.draw.Button(WIDTH - 450, 2 * HEIGHT / 3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
             self.draw.draw_text("PAUSE", WIDTH / 2, HEIGHT / 3, 200, BLUE)
+
             pygame.display.flip()
             self.clock.tick(FPS)
 
@@ -96,6 +110,7 @@ class Game:
 
                 self.screen.fill(SKY_BLUE)
                 self.screen.blit(self.background, self.background_rect)
+
                 self.draw.Button(200, 2 * HEIGHT / 3, "PLAY AGAIN",
                                  BRIGHT_GREEN, GREEN, self.gameloop, 150, 100)
                 self.draw.Button(WIDTH - 450, 2 * HEIGHT / 3, "QUIT", BRIGHT_RED, RED, quit, 150, 100)
@@ -104,6 +119,7 @@ class Game:
                 if self.score == self.highscore:
                     self.draw.draw_text("Congratulations you have a new high score",
                                         WIDTH / 2, HEIGHT - 200, 60, BRIGHT_GREEN)
+
                 pygame.display.flip()
                 self.clock.tick(FPS)
 
@@ -188,6 +204,7 @@ class Game:
         self.screen.fill(SKY_BLUE)
         self.screen.blit(self.background, self.background_rect)
         self.all_sprites.draw(self.screen)
+
         self.draw.Button(WIDTH - 170, 20, "PAUSE", BRIGHT_GREEN,
                          GREEN, self.pause_function, 150, 100)
         self.draw.Button(WIDTH - 170, 140, "Instructions", BRIGHT_GREEN,
@@ -201,12 +218,14 @@ class Game:
                             WIDTH - 200, HEIGHT - 50, 40, BLUE)
 
     # screen when instruction button is clicked
+
     def instruction_screen(self):
         self.instruction = True
         while self.instruction:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quit()
+
                 self.draw.DrawRect(150, 150, WIDTH - 300, HEIGHT - 300, GREEN_YELLOW)
                 x = 600
                 y = 300
@@ -216,6 +235,8 @@ class Game:
                 self.draw.draw_text("3. Drag the arrow to increase velocity", x + 50, y + 160, 60, BLACK)
                 self.draw.draw_text(" and then release to shoot.", x - 20, y + 220, 60, BLACK)
                 self.draw.Button(WIDTH - 930, 2 * HEIGHT / 3, "RESUME", DARK_BROWN, BROWN, self.resume, 170, 100)
+
+            
                 pygame.display.flip()
                 self.clock.tick(FPS)
 
